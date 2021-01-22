@@ -466,7 +466,6 @@ if __name__ == "__main__":
             plt.colorbar()
             plt.scatter(true_loc[0], true_loc[1], color='r', s=3)
             plt.title(f'Timestep {i + 1}')
-            plt.savefig(f'{i + 1}.png')
             ax = plt.gca()
             ax.set_aspect('equal')
             plt.show(block=False)
