@@ -316,7 +316,8 @@ class MeasureProb:
 
     def gen_meas(self, true_loc):
         # Your assignment: Sample from the PDF.  Return a (2,) sized np.array
-        sample = np.dot(self.apply_noise, np.random.rand(2, )) + true_loc
+        sample = np.dot(self.apply_noise, np.random.randn(2, )) + true_loc
+
         return sample
 
 
@@ -408,14 +409,14 @@ if __name__ == "__main__":
         true_start = p0.gen_meas(np.zeros(2))
         # Your assignment:  Propagate forward in time n_steps
         # result should be in curr_p and curr_box
-
         for i in range(n_steps):
             true_loc = fp.time_prop(true_start)
+            print(f'True Location: {true_loc}')
             curr_p = sp.convolve2d(curr_p, fp.p_process) * dx * dx
             curr_box = curr_box.conv(fp.box)
-            true_start = curr_box.gen_meas(true_loc)
+            true_start = p0.gen_meas(true_loc)
 
-        # Plot it.
+        # Plot it.        
         curr_x, curr_y = curr_box.gen_axes(dx)
         plt.contourf(curr_x, curr_y, curr_p)
         ax = plt.gca()
@@ -432,7 +433,6 @@ if __name__ == "__main__":
         true_loc = p0.gen_meas(np.array([0, 0]))
         curr_box = copy.copy(p0.box)
         print(f'true location at time 0 is {true_loc}')
-
         for i in range(n_steps):
             # Your Assignment:  Implement a Bayesian filter & simulation
 
@@ -474,3 +474,4 @@ if __name__ == "__main__":
         print(f"Bayes filtering done for {n_steps} timesteps.  Hit return to finish...")
         input()
         plt.close('all')
+
